@@ -1,0 +1,36 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: spring-cloud-api-gateway-internal
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      httpclient:
+        pool:
+          type: FIXED
+          maxConnections: 100
+          acquireTimeout: 45
+        wiretap: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/authService/**
+          filters:
+            - StripPrefix=1
+
+        - id: train-ticket-service
+          uri: lb://train-ticket-service
+          predicates:
+            - Path=/trainTicketService/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://192.168.1.100:8100/eureka
