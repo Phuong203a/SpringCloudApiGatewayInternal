@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 8201
 
 spring:
   application:
@@ -33,4 +33,4 @@ eureka:
   client:
     enabled: true
     serviceUrl:
-      defaultZone: http://192.168.1.100:8100/eureka
+      defaultZone: http://host.docker.internal:8200/eureka
