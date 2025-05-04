@@ -55,7 +55,7 @@ public class LoggingFilter implements GlobalFilter {
                             if (dataNode != null && dataNode.isTextual()) {
                                 String encrypted = dataNode.asText();
                                 Base64.getDecoder().decode(encrypted); // sanity check
-
+                                log.info("Encrypted Data: {}",encrypted);
                                 String decrypted = DataUtils.decrypt(Const.SECRET_AES_KEY, encrypted, "AES");
                                 if (decrypted != null) {
                                     finalBody = decrypted.getBytes(StandardCharsets.UTF_8);
