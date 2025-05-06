@@ -35,6 +35,7 @@ public class LoggingFilter implements GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         String requestId = request.getId();
 
+        log.info("Request ID: {}, URL: {}", requestId, request.getURI());
         return DataBufferUtils.join(request.getBody())
                 .defaultIfEmpty(exchange.getResponse().bufferFactory().wrap(new byte[0]))
                 .flatMap(dataBuffer -> {
@@ -55,9 +56,9 @@ public class LoggingFilter implements GlobalFilter {
                             if (dataNode != null && dataNode.isTextual()) {
                                 String encrypted = dataNode.asText();
                                 Base64.getDecoder().decode(encrypted); // sanity check
-                                log.info("Encrypted Data: {}",encrypted);
                                 String decrypted = DataUtils.decrypt(Const.SECRET_AES_KEY, encrypted, "AES");
                                 if (decrypted != null) {
+                                    log.info("FinalBody: {}",decrypted);
                                     finalBody = decrypted.getBytes(StandardCharsets.UTF_8);
                                 }
                             } else {
